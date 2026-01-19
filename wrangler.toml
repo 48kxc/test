@@ -1,0 +1,12 @@
+name = "your-project-name"
+type = "webpack"
+
+[build]
+command = "npm run build"
+upload = {
+  format = "modules"
+}
+
+[build.upload]
+format = "modules"
+main = "./index.html"
