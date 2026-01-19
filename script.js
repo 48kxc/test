@@ -77,11 +77,21 @@ function getBrowser() {
     else if (userAgent.indexOf('Opera') !== -1 || userAgent.indexOf('OPR') !== -1) browser = 'Opera';
     else if (userAgent.indexOf('Trident') !== -1) browser = 'Internet Explorer';
     else if (userAgent.indexOf('Edg') !== -1) browser = 'Edge';
+    else if (userAgent.indexOf('Br') !== -1) browser = 'Brave';
+    else if (userAgent.indexOf('Vivaldi') !== -1) browser = 'Vivaldi';
+    else if (userAgent.indexOf('Yandex') !== -1) browser = 'Yandex';
+    else if (userAgent.indexOf('SamsungBrowser') !== -1) browser = 'Samsung Internet';
+    else if (userAgent.indexOf('Silk') !== -1) browser = 'Amazon Silk';
+    else if (userAgent.indexOf('Mozilla') !== -1 && userAgent.indexOf('Gecko') !== -1 && userAgent.indexOf('like Gecko') === -1) browser = 'Mozilla';
     return browser;
 }
 
 function isUserUsingVPN(geoData) {
-    // Simple heuristic to detect VPN: check if the country is known for VPN services
-    const vpnCountries = ['US', 'NL', 'DE', 'UK', 'CA', 'AU', 'SG', 'HK', 'JP', 'FR'];
-    return vpnCountries.includes(geoData.country_code);
+    // More robust VPN detection: check if the IP is associated with a known VPN provider
+    const vpnProviders = [
+        'TunnelBear', 'Private Internet Access', 'CyberGhost', 'NordVPN', 'ExpressVPN',
+        'Surfshark', 'ProtonVPN', 'Hotspot Shield', 'Windscribe', 'HideMyAss!'
+    ];
+
+    return vpnProviders.some(provider => geoData.org && geoData.org.toLowerCase().includes(provider.toLowerCase()));
 }
