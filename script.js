@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 function getOS() {
     const userAgent = navigator.userAgent;
     let os = 'Unknown';
-    if (userAgent.indexOf('Win') !== -1) os = 'Windows';
+    if (userAgent.indexOf('Win') !== -1) os = 'Windowss';
     else if (userAgent.indexOf('Mac') !== -1) os = 'MacOS';
     else if (userAgent.indexOf('X11') !== -1) os = 'UNIX';
     else if (userAgent.indexOf('Linux') !== -1) os = 'Linux';
